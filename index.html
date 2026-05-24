@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FragFuse</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+      line-height: 1.6;
+      color: #222;
+    }
+    h1 {
+      font-size: 42px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 20px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+    .authors {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333;
+    }
+    .buttons {
+      text-align: center;
+      margin: 25px 0;
+    }
+    .buttons a {
+      display: inline-block;
+      margin: 6px;
+      padding: 10px 18px;
+      border-radius: 6px;
+      background: #222;
+      color: white;
+      text-decoration: none;
+      font-size: 15px;
+    }
+    .buttons a:hover {
+      background: #555;
+    }
+    section {
+      margin-top: 35px;
+    }
+    h2 {
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 6px;
+    }
+    .bibtex {
+      background: #f6f6f6;
+      padding: 15px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-family: monospace;
+      font-size: 14px;
+      white-space: pre;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>FragFuse</h1>
+
+  <div class="subtitle">
+    Memory-Based Query Fragmentation Attack on LLM Agents
+  </div>
+
+  <div class="authors">
+    Zixin Rao, Ying Wu, and Co-authors
+  </div>
+
+  <div class="buttons">
+    <a href="https://github.com/zixin22/Fragfuse">Code</a>
+    <a href="https://drive.google.com/file/d/1654NVeMhjAg1j-x-K_IjCsnT6R-2nCP3/view?usp=sharing">Extended Version</a>
+    <a href="#">Paper</a>
+  </div>
+
+  <section>
+    <h2>Abstract</h2>
+    <p>
+      FragFuse studies a memory-based query fragmentation attack against
+      access-control mechanisms in LLM agents. The attack decomposes prohibited
+      task intent into benign-looking fragments, stores them through normal
+      memory interactions, and later retrieves and assembles them to bypass
+      access-control checks while preserving the original task objective.
+    </p>
+  </section>
+
+  <section>
+    <h2>Overview</h2>
+    <p>
+      The project highlights a new attack surface in memory-augmented LLM agents:
+      the interaction between long-term memory, retrieval, instruction assembly,
+      and access-control enforcement. We evaluate the attack in controlled
+      benchmark environments and discuss mitigation directions for safer agent
+      deployment.
+    </p>
+  </section>
+
+  <section>
+    <h2>Resources</h2>
+    <p>
+      The code and datasets produced in this study are publicly available at
+      <a href="https://github.com/zixin22/Fragfuse">GitHub</a>.
+      An extended version of the paper, including additional data, analysis
+      results, and per-category statistics, is available
+      <a href="https://drive.google.com/file/d/1654NVeMhjAg1j-x-K_IjCsnT6R-2nCP3/view?usp=sharing">here</a>.
+    </p>
+  </section>
+
+  <section>
+    <h2>Citation</h2>
+    <div class="bibtex">@inproceedings{rao2026fragfuse,
+  title     = {FragFuse: Memory-Based Query Fragmentation Attack on LLM Agents},
+  author    = {Rao, Zixin and Wu, Ying and Others},
+  booktitle = {Proceedings of the USENIX Security Symposium},
+  year      = {2026}
+}</div>
+  </section>
+
+</body>
+</html>
