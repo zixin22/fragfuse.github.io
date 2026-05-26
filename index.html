@@ -5,125 +5,643 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FragFuse</title>
   <style>
+    :root {
+      --ink: #17202a;
+      --muted: #5a6572;
+      --line: #d8dde4;
+      --paper: #fbfaf7;
+      --panel: #ffffff;
+      --accent: #bf4f35;
+      --accent-dark: #873824;
+      --blue: #245b7a;
+      --green: #4d7356;
+      --shadow: 0 20px 60px rgba(23, 32, 42, 0.10);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      font-family: Arial, Helvetica, sans-serif;
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
-      line-height: 1.6;
-      color: #222;
+      margin: 0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      line-height: 1.65;
+      color: var(--ink);
+      background: var(--paper);
     }
-    h1 {
-      font-size: 42px;
-      text-align: center;
-      margin-bottom: 10px;
+
+    a {
+      color: var(--accent-dark);
     }
-    .subtitle {
-      text-align: center;
-      font-size: 20px;
-      color: #555;
-      margin-bottom: 20px;
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(216, 221, 228, 0.85);
+      background: rgba(251, 250, 247, 0.92);
+      backdrop-filter: blur(14px);
     }
-    .authors {
-      text-align: center;
-      margin-bottom: 30px;
-      color: #333;
+
+    .nav {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
     }
-    .buttons {
-      text-align: center;
-      margin: 25px 0;
+
+    .brand {
+      font-weight: 800;
+      letter-spacing: 0;
     }
-    .buttons a {
-      display: inline-block;
-      margin: 6px;
-      padding: 10px 18px;
-      border-radius: 6px;
-      background: #222;
-      color: white;
-      text-decoration: none;
-      font-size: 15px;
-    }
-    .buttons a:hover {
-      background: #555;
-    }
-    section {
-      margin-top: 35px;
-    }
-    h2 {
-      border-bottom: 1px solid #ddd;
-      padding-bottom: 6px;
-    }
-    .bibtex {
-      background: #f6f6f6;
-      padding: 15px;
-      border-radius: 6px;
-      overflow-x: auto;
-      font-family: monospace;
+
+    .navlinks {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
       font-size: 14px;
-      white-space: pre;
+    }
+
+    .navlinks a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .navlinks a:hover {
+      color: var(--ink);
+    }
+
+    .hero {
+      border-bottom: 1px solid var(--line);
+      background:
+        linear-gradient(135deg, rgba(191, 79, 53, 0.12), rgba(36, 91, 122, 0.10) 42%, rgba(77, 115, 86, 0.10)),
+        var(--paper);
+    }
+
+    .hero-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 72px 24px 54px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+      gap: 42px;
+      align-items: center;
+    }
+
+    .kicker {
+      color: var(--accent-dark);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0 0 16px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(44px, 7vw, 82px);
+      line-height: 0.96;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin: 20px 0 0;
+      max-width: 760px;
+      color: #2f3c49;
+      font-size: clamp(20px, 2.8vw, 30px);
+      line-height: 1.22;
+      font-weight: 650;
+    }
+
+    .authors {
+      margin-top: 20px;
+      color: var(--muted);
+      font-size: 16px;
+    }
+
+    .hero-copy {
+      margin: 24px 0 0;
+      max-width: 720px;
+      color: #344252;
+      font-size: 17px;
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 28px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 42px;
+      padding: 10px 16px;
+      border: 1px solid var(--ink);
+      border-radius: 6px;
+      background: var(--ink);
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 750;
+    }
+
+    .button.secondary {
+      background: transparent;
+      color: var(--ink);
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .hero-figure {
+      min-height: 410px;
+      border: 1px solid rgba(23, 32, 42, 0.16);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      display: grid;
+      align-content: center;
+      gap: 16px;
+    }
+
+    .flow-step {
+      border: 1px solid var(--line);
+      border-left: 5px solid var(--accent);
+      background: var(--panel);
+      border-radius: 6px;
+      padding: 14px 16px;
+    }
+
+    .flow-step strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .flow-step span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    main {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 52px 24px 76px;
+    }
+
+    section {
+      margin-top: 58px;
+    }
+
+    section:first-child {
+      margin-top: 0;
+    }
+
+    .section-heading {
+      max-width: 760px;
+      margin-bottom: 24px;
+    }
+
+    h2 {
+      margin: 0 0 10px;
+      font-size: clamp(28px, 4vw, 42px);
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 0 0 8px;
+      font-size: 19px;
+      line-height: 1.28;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .grid.two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 22px;
+      box-shadow: 0 8px 24px rgba(23, 32, 42, 0.04);
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .metric {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .metric strong {
+      color: var(--accent-dark);
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    .metric span {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .figure-placeholder {
+      border: 1.5px dashed #aeb7c2;
+      border-radius: 8px;
+      background:
+        linear-gradient(90deg, rgba(23, 32, 42, 0.035) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(23, 32, 42, 0.035) 1px, transparent 1px),
+        rgba(255, 255, 255, 0.72);
+      background-size: 20px 20px;
+      min-height: 260px;
+      padding: 24px;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      color: var(--muted);
+    }
+
+    .figure-placeholder.large {
+      min-height: 360px;
+    }
+
+    .figure-placeholder strong {
+      display: block;
+      color: var(--ink);
+      font-size: 18px;
+      margin-bottom: 6px;
+    }
+
+    .note {
+      border-left: 4px solid var(--blue);
+      background: rgba(36, 91, 122, 0.08);
+      padding: 16px 18px;
+      border-radius: 6px;
+      color: #2d4050;
+    }
+
+    .note p {
+      margin: 0;
+    }
+
+    .list {
+      display: grid;
+      gap: 14px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .list li {
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 14px;
+    }
+
+    .list li:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .list strong {
+      color: var(--ink);
+    }
+
+    .list span {
+      color: var(--muted);
+    }
+
+    .citation-box {
+      min-height: 150px;
+      border: 1.5px dashed #aeb7c2;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.72);
+      padding: 18px;
+      color: var(--muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+
+    footer {
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      padding: 28px 24px 42px;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    @media (max-width: 860px) {
+      .hero-inner,
+      .grid,
+      .grid.two {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-inner {
+        padding-top: 50px;
+      }
+
+      .hero-figure {
+        min-height: 320px;
+      }
+
+      .nav {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .navlinks {
+        justify-content: flex-start;
+        gap: 12px;
+      }
     }
   </style>
 </head>
 <body>
+  <header class="topbar">
+    <nav class="nav" aria-label="Main navigation">
+      <div class="brand">FragFuse</div>
+      <div class="navlinks">
+        <a href="#abstract">Abstract</a>
+        <a href="#method">Method</a>
+        <a href="#evaluation">Evaluation</a>
+        <a href="#defenses">Defenses</a>
+        <a href="#resources">Resources</a>
+      </div>
+    </nav>
+  </header>
 
-  <h1>FragFuse</h1>
+  <section class="hero">
+    <div class="hero-inner">
+      <div>
+        <p class="kicker">LLM Agent Security | Memory-Augmented Agents</p>
+        <h1>FragFuse</h1>
+        <p class="subtitle">Bypassing Access Control of Large Language Model Agents via Memory-Based Query Fragmentation and Fusion</p>
+        <div class="authors">Authors: to be added</div>
+        <p class="hero-copy">
+          FragFuse exposes a temporal attack surface in memory-augmented LLM agents: policy-violating intent can be split across ordinary interactions, stored in long-term memory in benign-looking form, and later fused back during memory-augmented execution.
+        </p>
+        <div class="buttons">
+          <a class="button" href="https://github.com/zixin22/Fragfuse">Code</a>
+          <a class="button secondary" href="https://drive.google.com/file/d/1654NVeMhjAg1j-x-K_IjCsnT6R-2nCP3/view?usp=sharing">Extended Version</a>
+          <a class="button secondary" href="#">Paper</a>
+        </div>
+      </div>
 
-  <div class="subtitle">
-    Memory-Based Query Fragmentation Attack on LLM Agents
-  </div>
-
-  <div class="authors">
-    Zixin Rao, Ying Wu, and Co-authors
-  </div>
-
-  <div class="buttons">
-    <a href="https://github.com/zixin22/Fragfuse">Code</a>
-    <a href="https://drive.google.com/file/d/1654NVeMhjAg1j-x-K_IjCsnT6R-2nCP3/view?usp=sharing">Extended Version</a>
-    <a href="#">Paper</a>
-  </div>
-
-  <section>
-    <h2>Abstract</h2>
-    <p>
-      FragFuse studies a memory-based query fragmentation attack against
-      access-control mechanisms in LLM agents. The attack decomposes prohibited
-      task intent into benign-looking fragments, stores them through normal
-      memory interactions, and later retrieves and assembles them to bypass
-      access-control checks while preserving the original task objective.
-    </p>
+      <aside class="hero-figure" aria-label="FragFuse pipeline preview">
+        <div class="flow-step">
+          <strong>1. Fragment Discovery</strong>
+          <span>Identify sensitive spans that trigger access-control rejection and produce a masked query.</span>
+        </div>
+        <div class="flow-step">
+          <strong>2. Carrier Injection</strong>
+          <span>Place fragmented sensitive content into a benign host query that can be written into memory.</span>
+        </div>
+        <div class="flow-step">
+          <strong>3. Retrieval & Fusion</strong>
+          <span>Retrieve the carrier memory and reconstruct the prohibited intent during execution.</span>
+        </div>
+      </aside>
+    </div>
   </section>
 
-  <section>
-    <h2>Overview</h2>
-    <p>
-      The project highlights a new attack surface in memory-augmented LLM agents:
-      the interaction between long-term memory, retrieval, instruction assembly,
-      and access-control enforcement. We evaluate the attack in controlled
-      benchmark environments and discuss mitigation directions for safer agent
-      deployment.
-    </p>
-  </section>
+  <main>
+    <section id="abstract">
+      <div class="section-heading">
+        <h2>Abstract</h2>
+        <p class="lead">
+          Long-term memory helps LLM agents personalize, plan, and adapt across sessions, but it also creates a temporal channel that current query-level access control can miss.
+        </p>
+      </div>
+      <p>
+        FragFuse is a memory-based query fragmentation attack against access-controlled LLM agents. Instead of submitting a prohibited request directly, an ordinary user first decomposes access-control-triggering content into fragments, injects those fragments into long-term memory through benign-appearing carrier queries, and later issues an attack query that retrieves and fuses the stored fragments back into the original prohibited intent. The attack operates through normal user interactions under a black-box threat model: the attacker does not need privileged access to the agent workflow, memory bank, or internal access-control implementation.
+      </p>
+      <p>
+        The paper evaluates FragFuse across web shopping, web navigation, OS assistance, and tool-use agent settings, covering LLM-based access control and state-of-the-art agent guardrails. The results show that memory can undermine access control when enforcement only inspects the current query rather than the history-dependent execution context.
+      </p>
+    </section>
 
-  <section>
-    <h2>Resources</h2>
-    <p>
-      The code and datasets produced in this study are publicly available at
-      <a href="https://github.com/zixin22/Fragfuse">GitHub</a>.
-      An extended version of the paper, including additional data, analysis
-      results, and per-category statistics, is available
-      <a href="https://drive.google.com/file/d/1654NVeMhjAg1j-x-K_IjCsnT6R-2nCP3/view?usp=sharing">here</a>.
-    </p>
-  </section>
+    <section id="problem">
+      <div class="section-heading">
+        <h2>Why Memory Changes the Threat Model</h2>
+        <p class="lead">
+          Access-control modules often assume that prohibited intent appears explicitly in the current user query. Persistent memory breaks that assumption.
+        </p>
+      </div>
+      <div class="grid three">
+        <article class="card">
+          <h3>Access control is query-centric</h3>
+          <p>Many guardrails inspect each incoming query independently and reject requests that violate task policies, user eligibility rules, or resource permissions.</p>
+        </article>
+        <article class="card">
+          <h3>Memory is persistent</h3>
+          <p>Agents store previous query-execution pairs and retrieve similar records later, allowing earlier interactions to influence future execution.</p>
+        </article>
+        <article class="card">
+          <h3>Intent can be temporal</h3>
+          <p>FragFuse separates sensitive content from its original context, stores it across time, and reconstructs it only after access control has allowed the later query.</p>
+        </article>
+      </div>
+    </section>
 
-  <section>
-    <h2>Citation</h2>
-    <div class="bibtex">@inproceedings{rao2026fragfuse,
-  title     = {FragFuse: Memory-Based Query Fragmentation Attack on LLM Agents},
-  author    = {Rao, Zixin and Wu, Ying and Others},
-  booktitle = {Proceedings of the USENIX Security Symposium},
-  year      = {2026}
-}</div>
-  </section>
+    <section id="method">
+      <div class="section-heading">
+        <h2>Attack Pipeline</h2>
+        <p class="lead">
+          FragFuse turns one prohibited query into two ordinary interactions: one to write useful fragments into memory, and one to retrieve and fuse them.
+        </p>
+      </div>
+      <div class="figure-placeholder large">
+        <div>
+          <strong>Figure placeholder: FragFuse overview</strong>
+          <span>Insert the main pipeline figure showing access control, memory bank, carrier query, attack query, and fragment fusion.</span>
+        </div>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <h3>Stage 1: Sensitive Fragment Discovery</h3>
+          <p>An LLM-based fragment extractor proposes spans responsible for denial. The attacker masks candidate spans with markers and repeats until the masked query bypasses access control.</p>
+        </article>
+        <article class="card">
+          <h3>Stage 2: Carrier Construction & Injection</h3>
+          <p>The extracted fragments are split, marked, and embedded into a benign host query. Once submitted, the resulting query-execution pair is stored as a memory record.</p>
+        </article>
+        <article class="card">
+          <h3>Stage 3: Retrieval & Fusion</h3>
+          <p>The attack query reuses the host query to retrieve the carrier memory, then uses a fusion instruction to place the marked fragments back into the masked query.</p>
+        </article>
+      </div>
+      <div class="note">
+        <p>
+          FragFuse further improves reliability with offline surrogate optimization. A genetic search tunes fusion instructions using surrogate retrieval, fusion, and coherence objectives, while keeping attack generation within the black-box threat model.
+        </p>
+      </div>
+    </section>
 
+    <section id="evaluation">
+      <div class="section-heading">
+        <h2>Evaluation</h2>
+        <p class="lead">
+          The study evaluates FragFuse across four representative agent settings and multiple access-control mechanisms.
+        </p>
+      </div>
+      <div class="grid">
+        <article class="card metric">
+          <strong>86.3%</strong>
+          <span>Average bypass success rate reported across all evaluated configurations.</span>
+        </article>
+        <article class="card metric">
+          <strong>4.4%</strong>
+          <span>Average task-success degradation compared with direct querying without access control.</span>
+        </article>
+        <article class="card metric">
+          <strong>4</strong>
+          <span>Agent settings: RAP, SeeAct, OSAgent, and InspAgent.</span>
+        </article>
+      </div>
+
+      <div class="grid two" style="margin-top: 18px;">
+        <article class="card">
+          <h3>Agent and Dataset Coverage</h3>
+          <ul class="list">
+            <li><strong>RAP on WebShop:</strong> <span>purchase-oriented web shopping tasks with profile-based access control.</span></li>
+            <li><strong>SeeAct on Mind2Web-SC:</strong> <span>web navigation tasks with user eligibility constraints.</span></li>
+            <li><strong>OSAgent on Safe-OS:</strong> <span>system-assistance tasks involving high-risk OS operations.</span></li>
+            <li><strong>InspAgent on AgentHarm:</strong> <span>tool-use tasks with harmful and benign counterparts.</span></li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Access-Control Coverage</h3>
+          <p>
+            FragFuse is tested against LLM-based access control and existing agent guardrails, including GuardAgent, AGrail, and ShieldAgent. The evaluation measures bypass success rate, task success rate, and supplementary end-to-end success.
+          </p>
+        </article>
+      </div>
+
+      <div class="grid two" style="margin-top: 18px;">
+        <div class="figure-placeholder">
+          <div>
+            <strong>Table placeholder: Main effectiveness</strong>
+            <span>Insert table comparing baseline and FragFuse across agents, access control, and backbone LLMs.</span>
+          </div>
+        </div>
+        <div class="figure-placeholder">
+          <div>
+            <strong>Figure placeholder: Retrieval robustness</strong>
+            <span>Insert figure for carrier-query retrieval success under different memory retrieval metrics.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="defenses">
+      <div class="section-heading">
+        <h2>Defense Analysis</h2>
+        <p class="lead">
+          Existing defenses reduce some risks, but they do not fully address memory-mediated temporal composition.
+        </p>
+      </div>
+      <div class="grid">
+        <article class="card">
+          <h3>Rate limiting</h3>
+          <p>The attack is query efficient: sensitive-fragment discovery typically converges with a small number of queries, while fusion-instruction optimization is performed offline.</p>
+        </article>
+        <article class="card">
+          <h3>Prompt filtering</h3>
+          <p>Prompt-injection detectors often classify carrier queries, and many attack queries, as benign because the sensitive intent is fragmented and context-dependent.</p>
+        </article>
+        <article class="card">
+          <h3>Perplexity detection</h3>
+          <p>For several evaluated domains, benign, carrier, and attack-query perplexity distributions overlap substantially, limiting detection power.</p>
+        </article>
+      </div>
+      <div class="figure-placeholder" style="margin-top: 18px;">
+        <div>
+          <strong>Figure placeholder: Defense results</strong>
+          <span>Insert prompt-injection detector table or perplexity distribution figure.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="discussion">
+      <div class="section-heading">
+        <h2>Discussion</h2>
+        <p class="lead">
+          FragFuse points to a design gap: access control should reason over memory admission, retrieval, and execution-time composition, not only the latest query.
+        </p>
+      </div>
+      <div class="grid two">
+        <article class="card">
+          <h3>Limitations</h3>
+          <p>
+            The evaluation focuses on controlled research settings and representative domains. Generalization to other domains depends on available access-control policies, memory designs, and the instruction-following capability of the underlying agent model.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Ethical Use</h3>
+          <p>
+            The work is intended to reveal and measure a security risk so that memory-augmented agents can be hardened. Defensive directions include memory admission control, retrieval-aware access control, and post-retrieval inspection of fused execution context.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section id="resources">
+      <div class="section-heading">
+        <h2>Resources</h2>
+        <p class="lead">Project materials and release links.</p>
+      </div>
+      <div class="grid two">
+        <article class="card">
+          <h3>Code</h3>
+          <p><a href="https://github.com/zixin22/Fragfuse">https://github.com/zixin22/Fragfuse</a></p>
+        </article>
+        <article class="card">
+          <h3>Extended Version</h3>
+          <p><a href="https://drive.google.com/file/d/1654NVeMhjAg1j-x-K_IjCsnT6R-2nCP3/view?usp=sharing">View extended version</a></p>
+        </article>
+      </div>
+    </section>
+
+    <section id="citation">
+      <div class="section-heading">
+        <h2>Citation</h2>
+        <p class="lead">Citation will be added after the final bibliographic entry is ready.</p>
+      </div>
+      <div class="citation-box">Citation placeholder</div>
+    </section>
+  </main>
+
+  <footer>
+    FragFuse | Memory-Based Query Fragmentation and Fusion for LLM Agent Access-Control Evaluation
+  </footer>
 </body>
 </html>
