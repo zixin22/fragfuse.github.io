@@ -391,6 +391,7 @@
       <div class="brand">FragFuse</div>
       <div class="navlinks">
         <a href="#abstract">Abstract</a>
+        <a href="#warning">Warning</a>
         <a href="#method">Method</a>
         <a href="#evaluation">Evaluation</a>
         <a href="#defenses">Defenses</a>
@@ -447,6 +448,20 @@
       <p>
         The paper evaluates FragFuse across web shopping, web navigation, OS assistance, and tool-use agent settings, covering LLM-based access control and state-of-the-art agent guardrails. The results show that memory can undermine access control when enforcement only inspects the current query rather than the history-dependent execution context.
       </p>
+    </section>
+
+    <section id="warning">
+      <div class="section-heading">
+        <h2>Warning</h2>
+        <p class="lead">
+          FragFuse is a security research project intended to help developers identify and mitigate risks in memory-augmented LLM agents.
+        </p>
+      </div>
+      <div class="note">
+        <p>
+          The techniques discussed on this page and in the paper should only be used for authorized research, evaluation, and defensive testing. Do not use FragFuse to bypass access controls, violate platform policies, access restricted resources, or cause real-world harm. Released artifacts are intended to support responsible security analysis and the design of stronger memory-aware defenses.
+        </p>
+      </div>
     </section>
 
     <section id="problem">
